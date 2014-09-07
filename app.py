@@ -29,10 +29,10 @@ class AuthView(FlaskView):
         try:
             success = request.client.authenticate(user, password)
         except:
-            success = False
+            flash("could not login")
+            return redirect(url_for("AuthView:login_get"))
 
         return redirect(url_for("IndexView:index"))
-
 
     @route('/register', endpoint='AuthView:register_get', methods=["GET"])
     def register_get(self):
@@ -52,6 +52,8 @@ class AuthView(FlaskView):
             success = request.client.register(user, password)
         except:
             success = False
+            flash("could not register")
+            return redirect(url_for("AuthView:register_get"))
 
         return redirect(url_for("IndexView:index"))
 
