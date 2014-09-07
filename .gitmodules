@@ -1,0 +1,3 @@
+[submodule "static/frontend-ui"]
+	path = static/frontend-ui
+	url = git@git.bitvid.tv:bitvid/frontend-ui.git
