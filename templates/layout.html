@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>BitVid</title>
+        <link href="/static/frontend-ui/styles/glace.css" rel="stylesheet">
+
+    </head>
+    <body>
+
+    <div class="sidebar">
+        <h6>Videos</h6>
+        <div class="menu vertical closer">
+            <a class="item selected" href="#">
+                <span class="icon small"></span>
+                Subscriptions
+                <span class="label">15</span>
+            </a>
+            <a class="item" href="#">
+                <span class="icon small"></span>
+                Queue
+                <span class="label">3</span>
+            </a>
+            <a class="item" href="#">
+                <span class="icon small"></span>
+                Favorites
+                <span class="label">24</span>
+            </a>
+            <a class="item" href="#">
+                <span class="icon small"></span>
+                Popular
+            </a>
+        </div>
+
+        <h6>Account</h6>
+        <div class="menu vertical closer">
+            {% if not session.client_token %}
+                <div class="part">
+                    <a href="{{ url_for('AuthView:login_get') }}" class="button wide part">Login</a>
+                </div>
+
+                <div class="part">
+                    <a href="{{ url_for('AuthView:register_get') }}" class="button wide part">Register</a>
+                </div>
+            {% else %}
+
+                <a class="item" href="#">
+                    <span class="icon small"></span>
+                    Settings
+                </a>
+                <div class="part">
+                    <a href="{{ url_for('AuthView:logout') }}"class="button wide part">Logout</a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="content">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+                
+        {% block body %}{% endblock %}
+        </div>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container small" style="margin-top:150px">
+    <div class="package small">
+        <h6>Register</h6>
+        <hr>
+
+        <div class="part">
+            <form class="wide" method="post" action="{{ url_for('AuthView:register_post') }}">
+                <input type="text" name="username" placeholder="Username">
+                <input type="password" name="password" placeholder="Password">
+                <input type="password" name="password2" placeholder="Password (again)">
+                <input type="submit" value="Sign in">
+            </form>
+        </div>
+        <p class="small">
+            <a class="silent" href="#">Reset my password</a>
+        </p>
+    </div>
+    </div>
+</div>
+{% endblock %}
