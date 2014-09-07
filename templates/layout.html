@@ -42,9 +42,9 @@
                 </div>
             {% else %}
 
-                <a class="item" href="#">
+                <a class="item" href="{{ url_for('UserView:index') }}">
                     <span class="icon small"></span>
-                    Settings
+                    Profile
                 </a>
                 <div class="part">
                     <a href="{{ url_for('AuthView:logout') }}"class="button wide part">Logout</a>

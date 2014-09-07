@@ -61,9 +61,16 @@ class AuthView(FlaskView):
         request.client.authtoken = None
         return redirect(url_for("IndexView:index"))
 
+class UserView(FlaskView):
+    def index(self):
+        return render_template("user.html", user=request.client.getUser())
+
+    def get(self,userid):
+        return render_template("user.html", user=request.client.getUser(userid))
 
 IndexView.register(app)
 AuthView.register(app)
+UserView.register(app)
 
 
 @app.before_request

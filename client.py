@@ -69,6 +69,9 @@ class HTTPClient:
         val = self._request(self.request.put, url, data)
         return val
 
+    def getUser(self,userid="current"):
+        return self._json(self._get("/user/"+userid))
+
     def authenticate(self, email, password):
         print "authenticating {email}:{password}".format(email=email, password=password)
         logindata = {
