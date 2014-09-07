@@ -81,4 +81,4 @@ def after(response, **kwargs):
     return response
 if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'  # TODO, change this
-    app.run(port=8080, debug=True)
+    app.run(port=8080, host="0.0.0.0", debug=True)
