@@ -48,7 +48,7 @@ class HTTPClient:
             raise Exception(http_error_msg)
 
         elif 500 <= responsecode < 600:
-            http_error_msg = '%s Server Error: %s' % (self.status_code, reason)
+            http_error_msg = '%s Server Error: %s' % (responsecode, reason)
             raise Exception(http_error_msg)
 
         return val
