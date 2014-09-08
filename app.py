@@ -85,7 +85,8 @@ class UserView(FlaskView):
 
 class VideoView(FlaskView):
     def index(self):
-        videos = getVideosForQuery("*")
+        query = request.args.get("q","*")
+        videos = getVideosForQuery(query)
 
         return render_template("videolist.html",videos=videos)
 

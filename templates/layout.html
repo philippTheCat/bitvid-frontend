@@ -9,6 +9,10 @@
     <div class="sidebar">
         <h6>Videos</h6>
         <div class="menu vertical closer">
+            <form action="{{ url_for('VideoView:index') }}">
+                <input type="text" name="q" placeholder="Search">
+            </form>
+            
             <a class="item selected" href="{{ url_for('VideoView:index') }}">
                 <span class="icon small"></span>
                 Subscriptions
