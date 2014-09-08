@@ -186,3 +186,7 @@ class HTTPClient:
     def uploadVideo(self, token, videoFile):
         returndata = self._put("/video/"+token, videoFile.read())
         return self._json(returndata)
+
+    def search(self, searchquery):
+        returndata = self._get("/search?q="+searchquery)
+        return self._json(returndata)

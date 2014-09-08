@@ -2,9 +2,23 @@ from flask import Flask, render_template, session, request, flash, url_for, redi
 from flask.ext.classy import FlaskView, route
 
 from client import HTTPClient
-
+from pprint import pprint
 
 app = Flask(__name__)
+
+
+def buildVideoFromJson(json):
+    resultset = []
+    for video in json:
+        #video["user"] = request.client.getUser(str(video["user_id"]))
+        resultset.append(video)
+
+    pprint(resultset,indent=4)
+    return resultset
+
+
+def getVideosForQuery(query):
+    return buildVideoFromJson(request.client.search(query))
 
 
 class IndexView(FlaskView):
@@ -51,7 +65,6 @@ class AuthView(FlaskView):
         try:
             success = request.client.register(user, password)
         except:
-            success = False
             flash("could not register")
             return redirect(url_for("AuthView:register_get"))
 
@@ -61,17 +74,36 @@ class AuthView(FlaskView):
         request.client.authtoken = None
         return redirect(url_for("IndexView:index"))
 
+
 class UserView(FlaskView):
     def index(self):
         return render_template("user.html", user=request.client.getUser())
 
-    def get(self,userid):
+    def get(self, userid):
         return render_template("user.html", user=request.client.getUser(userid))
+
+
+class VideoView(FlaskView):
+    def index(self):
+        videos = getVideosForQuery("*")
+
+        return render_template("videolist.html",videos=videos)
+
+    def get(self, videoid):
+        return "video id"
+
+    @route('/upload', endpoint='VideoView:upload_get', methods=["GET"])
+    def upload_get(self):
+        return render_template("video.html")
+
+    @route('/upload', endpoint='VideoView:upload_post', methods=["POST"])
+    def upload_post(self):
+        return render_template("video.html")
 
 IndexView.register(app)
 AuthView.register(app)
 UserView.register(app)
-
+VideoView.register(app)
 
 @app.before_request
 def before(*args, **kwargs):

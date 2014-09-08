@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+{% for video in videos %}
+        {% include 'video.html' %}
+{% endfor %}
+</div>
+{% endblock %}
