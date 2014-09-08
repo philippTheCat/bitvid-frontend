@@ -117,7 +117,7 @@ VideoView.register(app)
 
 @app.before_request
 def before(*args, **kwargs):
-    request.client = HTTPClient("http://localhost:5000")
+    request.client = HTTPClient(app.config["API_URL"])
     if "client_token" in session:
         request.client.authtoken = session["client_token"]
 
