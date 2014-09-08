@@ -1,0 +1,24 @@
+{% block body %}
+
+<div class="large-8">
+    <h3>{{video.user_name}} <span class="unbold">posted</span></h3>
+</div>
+<div class="large-8">
+    <div class="package">
+        <div class="large-2 wide">
+            <img src="http://lorempixel.com/266/150/">
+        </div>
+        <div class="large-4">
+            <h3><a href="{{url_for('VideoView:get', videoid=video.token)}}" >{{video.title}}</a></h3>
+            <p class="small">User</p>
+            <p>{{video.description}}</p>
+        </div>
+        <div class="large-2">
+            <h3 class="silent">7,123,125 views</h3>
+            <h4 class="silent">4,125 points</h4>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

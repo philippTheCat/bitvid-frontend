@@ -3,9 +3,12 @@ from flask.ext.classy import FlaskView, route
 
 from client import HTTPClient
 from pprint import pprint
-
+import os
 app = Flask(__name__)
 
+
+curr_env = os.environ.get("BITVID_ENV", "Dev")
+app.config.from_object("config.{env}Config".format(env=curr_env))
 
 def buildVideoFromJson(json):
     resultset = []
@@ -91,7 +94,9 @@ class VideoView(FlaskView):
         return render_template("videolist.html",videos=videos)
 
     def get(self, videoid):
-        return "video id"
+        video = getVideosForQuery("token:"+videoid)
+
+        return render_template("video.html",video=video)
 
     @route('/upload', endpoint='VideoView:upload_get', methods=["GET"])
     def upload_get(self):
