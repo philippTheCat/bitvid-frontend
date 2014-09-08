@@ -94,11 +94,15 @@ class VideoView(FlaskView):
 
     @route('/upload', endpoint='VideoView:upload_get', methods=["GET"])
     def upload_get(self):
-        return render_template("video.html")
+        return render_template("video_upload.html")
 
     @route('/upload', endpoint='VideoView:upload_post', methods=["POST"])
     def upload_post(self):
-        return render_template("video.html")
+        title = request.form["title"]
+        description = request.form["description"]
+        videotoken = request.client._getVideoToken(title,description)
+        request.client.uploadVideo(videotoken, request.files["videofile"])
+        return "uploading"
 
 IndexView.register(app)
 AuthView.register(app)

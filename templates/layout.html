@@ -41,7 +41,10 @@
                     <a href="{{ url_for('AuthView:register_get') }}" class="button wide part">Register</a>
                 </div>
             {% else %}
-
+                <a class="item" href="{{ url_for('VideoView:upload_get') }}">
+                    <span class="icon small"></span>
+                    Upload
+                </a>
                 <a class="item" href="{{ url_for('UserView:index') }}">
                     <span class="icon small"></span>
                     Profile
