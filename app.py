@@ -94,7 +94,7 @@ class VideoView(FlaskView):
         return render_template("videolist.html",videos=videos)
 
     def get(self, videoid):
-        video = getVideosForQuery("token:"+videoid)
+        video = getVideosForQuery("token:"+videoid)[0]
 
         return render_template("video.html",video=video)
 
