@@ -7,4 +7,4 @@ class DevConfig(Config):
 
 class PLGConfig(DevConfig):
     API_URL = "http://cersei-web-2.bitvid.tv:5000"
-    HOST = "http://playground.bitvid.tv:8000"
+    HOST = "http://playground.bitvid.tv"
