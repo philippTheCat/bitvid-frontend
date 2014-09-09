@@ -18,14 +18,16 @@ def videofile_webserver_path(token, height, extention):
 def buildVideoFromJson(json):
     resultset = []
     for video in json:
-        newsizes = []
-        sizes = request.client.getVideo(str(video["token"]))
-        
-        for size in sizes["videos"]:
-            if size["codec"] == "webm":
-                size["path"] = videofile_webserver_path(video["token"], size["height"], size["codec"])
-                newsizes.append(size)
-        video["sizes"] = newsizes
+        actualvideos = {}
+        videomedias = request.client.getVideo(str(video["token"]))
+        pprint(videomedias,indent=4)
+        for videomedia in videomedias["videos"]:
+            if videomedia["codec"] not in actualvideos.keys() or videomedia["height"] > actualvideos[videomedia["codec"]]["height"]:
+                print videomedia["codec"]
+                videomedia["path"] = videofile_webserver_path(video["token"], videomedia["height"], videomedia["codec"])
+                actualvideos[videomedia["codec"]] = videomedia
+
+        video["medias"] = actualvideos
         resultset.append(video)
 
     pprint(resultset,indent=4)

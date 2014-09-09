@@ -4,8 +4,10 @@
     <h3>{{video.user_name}} <span class="unbold">posted</span></h3>
     <div class="large-8">
         <div class="package">
-            <video height="{{video.sizes[-1].height}}" controls autoplay>
-              <source src="{{video.sizes[-1].path}}" type="video/{{video.sizes[-1].codec}}">
+            <video height="{{video.medias['webm'].height}}" controls autoplay>
+                {% for video in video.medias.values() %}
+                    <source src="{{video.path}}" type="video/{{video.codec}}">
+                {% endfor %}
               Your browser does not support the video tag.
             </video>
             <hr class="attached">
@@ -14,7 +16,6 @@
                 <p>{{video.description}}</p>
             </div>
             <div class="large-2 medium-8 silent">
-                {{video.sizes[-1].path}}
                 <h3>6,567,787 views</h3>
                 <h4>7,787 points</h4>
             </div>
