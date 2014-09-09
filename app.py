@@ -4,16 +4,27 @@ from flask.ext.classy import FlaskView, route
 from client import HTTPClient
 from pprint import pprint
 import os
+import time
+
 app = Flask(__name__)
 
 
 curr_env = os.environ.get("BITVID_ENV", "Dev")
 app.config.from_object("config.{env}Config".format(env=curr_env))
 
+def videofile_webserver_path(token, height, extention):
+    return app.config["HOST"]+"/videos/" + token + "_" + str(height) + "." + extention
+
 def buildVideoFromJson(json):
     resultset = []
     for video in json:
-        #video["user"] = request.client.getUser(str(video["user_id"]))
+        newsizes = []
+        sizes = request.client.getVideo(str(video["token"]))
+        
+        for size in sizes["videos"]:
+            size["path"] = videofile_webserver_path(video["token"], size["height"], size["codec"])
+            newsizes.append(size)
+        video["sizes"] = newsizes
         resultset.append(video)
 
     pprint(resultset,indent=4)
@@ -106,9 +117,22 @@ class VideoView(FlaskView):
     def upload_post(self):
         title = request.form["title"]
         description = request.form["description"]
-        videotoken = request.client._getVideoToken(title,description)
+        videotoken = request.client._getVideoToken(title, description)
         request.client.uploadVideo(videotoken, request.files["videofile"])
-        return "uploading"
+
+        count = 20
+        while count > 0:
+            count -= 1
+            time.sleep(0.1)
+            try:
+                getVideosForQuery("token:"+videoid)[0]
+                break
+            except:
+                pass
+                # god is this ugly. waiting for the video to get indexed..
+
+        print url_for('VideoView:get', videoid=videotoken)
+        return redirect(app.config["HOST"]+url_for('VideoView:get', videoid=videotoken))
 
 IndexView.register(app)
 AuthView.register(app)

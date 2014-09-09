@@ -17,11 +17,12 @@ class HTTPClient:
         else:
             return response.json()
 
-    def _request(self, op, url, data):
-        headers = {
-            "Content-Type": "application/json"
-            #            "token": self.authtoken
-        }
+    def _request(self, op, url, data, headers=None):
+        if headers == None:
+            headers = {}
+
+        if "Content-Type" not in headers.keys():
+            headers["Content-Type"] = "application/json"
 
         if self.authtoken:
             headers["token"] = self.authtoken
@@ -65,8 +66,8 @@ class HTTPClient:
         val = self._request(self.request.delete, url, data)
         return val
 
-    def _put(self, url, data={}):
-        val = self._request(self.request.put, url, data)
+    def _put(self, url, data={}, headers=None):
+        val = self._request(self.request.put, url, data, headers=headers)
         return val
 
     def getUser(self,userid="current"):
@@ -175,6 +176,9 @@ class HTTPClient:
 
         return self._json(returndata)
 
+    def getVideo(self, token):
+        return self._json(self._get("/video/"+token))
+
     def updateVideo(self, token, title, description):
         updateData = {
             "title": title,
@@ -184,7 +188,12 @@ class HTTPClient:
         return self._json(returndata)
 
     def uploadVideo(self, token, videoFile):
-        returndata = self._put("/video/"+token, videoFile.read())
+        ext = videoFile.filename.split(".")[-1]
+        conttype = "video/"+ext
+        headers = {
+            "Content-Type": conttype
+        }
+        returndata = self._put("/video/"+token, videoFile.read(), headers=headers)
         return self._json(returndata)
 
     def search(self, searchquery):
