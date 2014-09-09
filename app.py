@@ -22,8 +22,9 @@ def buildVideoFromJson(json):
         sizes = request.client.getVideo(str(video["token"]))
         
         for size in sizes["videos"]:
-            size["path"] = videofile_webserver_path(video["token"], size["height"], size["codec"])
-            newsizes.append(size)
+            if size["codec"] == "webm":
+                size["path"] = videofile_webserver_path(video["token"], size["height"], size["codec"])
+                newsizes.append(size)
         video["sizes"] = newsizes
         resultset.append(video)
 
@@ -131,7 +132,6 @@ class VideoView(FlaskView):
                 pass
                 # god is this ugly. waiting for the video to get indexed..
 
-        print url_for('VideoView:get', videoid=videotoken)
         return redirect(app.config["HOST"]+url_for('VideoView:get', videoid=videotoken))
 
 IndexView.register(app)
