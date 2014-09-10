@@ -27,12 +27,15 @@ def buildVideoFromJson(jsobj):
     for video in jsobj:
         actualvideos = {}
         videomedias = request.client.getVideo(str(video["token"]))
-        pprint(videomedias,indent=4)
-        for videomedia in videomedias["videos"]:
-            if videomedia["codec"] not in actualvideos.keys() or videomedia["height"] > actualvideos[videomedia["codec"]]["height"]:
-                print videomedia["codec"]
-                videomedia["path"] = videofile_webserver_path(video["token"], videomedia["height"], videomedia["codec"])
-                actualvideos[videomedia["codec"]] = videomedia
+        if "message" in videomedias.keys():
+            pass
+        else:
+            pprint(videomedias,indent=4)
+            for videomedia in videomedias["videos"]:
+                if videomedia["codec"] not in actualvideos.keys() or videomedia["height"] > actualvideos[videomedia["codec"]]["height"]:
+                    print videomedia["codec"]
+                    videomedia["path"] = videofile_webserver_path(video["token"], videomedia["height"], videomedia["codec"])
+                    actualvideos[videomedia["codec"]] = videomedia
 
         video["medias"] = actualvideos
         resultset.append(video)
@@ -42,8 +45,17 @@ def buildVideoFromJson(jsobj):
 
 
 def getVideosForQuery(query):
-    return buildVideoFromJson(request.client.search(query))
+    data = request.client.search(query)
+    pprint(data,indent=4)
+    try:
+        if "message" in data.keys():
+            print "data", data
+            flash(data["message"])
+            return buildVideoFromJson({"videos":[]})
+    except:
+        pass
 
+    return buildVideoFromJson(data)
 
 class IndexView(FlaskView):
     route_base = "/"
