@@ -50,10 +50,10 @@ def getVideosForQuery(query):
     try:
         if "message" in data.keys():
             print "data", data
-            flash(data["message"])
-            return buildVideoFromJson({"videos":[]})
-    except:
-        pass
+            flash("could not load videos")
+            return {}
+    except Exception as ex:
+        print ex
 
     return buildVideoFromJson(data)
 
