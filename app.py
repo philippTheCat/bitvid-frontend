@@ -16,6 +16,10 @@ def videofile_webserver_path(token, height, extention):
     return app.config["HOST"]+"/videos/" + token + "_" + str(height) + "." + extention
 
 def buildVideoFromJson(json):
+    if "message" in json.keys():
+        flash("could not load videos")
+        return {}
+        
     resultset = []
     for video in json:
         actualvideos = {}
@@ -63,6 +67,11 @@ class AuthView(FlaskView):
             flash("could not login")
             return redirect(url_for("AuthView:login_get"))
 
+        if "message" in success.keys():
+            print "success", success
+            flash(success["message"])
+            return redirect(url_for("AuthView:login_get"))
+
         return redirect(url_for("IndexView:index"))
 
     @route('/register', endpoint='AuthView:register_get', methods=["GET"])
@@ -84,6 +93,12 @@ class AuthView(FlaskView):
         except:
             flash("could not register")
             return redirect(url_for("AuthView:register_get"))
+
+        if "message" in success.keys():
+            print "success", success
+            flash(success["message"])
+            return redirect(url_for("AuthView:register_get"))
+
 
         return redirect(url_for("IndexView:index"))
 
