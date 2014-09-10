@@ -46,11 +46,13 @@ class HTTPClient:
         reason = requests.status_codes.codes[responsecode]
         if 400 <= responsecode < 500:
             http_error_msg = '%s Client Error: %s' % (responsecode, reason)
-            raise Exception(http_error_msg)
+            ex = Exception(http_error_msg)
+            ex.data = self._json(val)
 
         elif 500 <= responsecode < 600:
             http_error_msg = '%s Server Error: %s' % (responsecode, reason)
-            raise Exception(http_error_msg)
+            ex = Exception(http_error_msg)
+            ex.data = self._json(val)
 
         return val
 
@@ -82,11 +84,11 @@ class HTTPClient:
         authdata = self._post("/auth/", logindata)
         print "authdata", self._json(authdata)
         if authdata.status_code is not 200:
-            return False
+            return self._json(authdata)
         else:
             self.authtoken = self._json(authdata)["token"]
-            print self.authtoken
-            return True
+            return self._json(authdata)
+
 
     def register(self, email, password):
         print "registrating {email}:{password}".format(email=email, password=password)
@@ -96,11 +98,11 @@ class HTTPClient:
         }
         registerdata = self._post("/user/", registerdata)
         if registerdata.status_code is not 200:
-            return False
+            return self._json(registerdata)
         else:
             self.userid = self._json(registerdata)["id"]
             print self.userid
-            return True
+            return self._json(registerdata)
 
     def comment(self, title, content, video, parent=None):
         print "commenting: parent={parent} video={video} {title}:\n{content}".format(title=title, content=content, video=video, parent=parent)
@@ -135,7 +137,7 @@ class HTTPClient:
 
         returndata = self._post("/video/", videoTokenData)
 
-        return self._json(returndata)["token"]
+        return self._json(returndata)
 
     def getCommentsForVideo(self, videotoken):
         print "getting comments for video", videotoken
