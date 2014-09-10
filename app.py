@@ -142,7 +142,14 @@ class VideoView(FlaskView):
         if "message" in video.keys():
             flash(video["message"])
             return redirect(url_for("VideoView:upload_get"))
-        request.client.uploadVideo(video["token"], request.files["videofile"])
+        uploaddata = request.client.uploadVideo(video["token"], request.files["videofile"])
+
+        if "message" in uploaddata.keys():
+            print "uploaddata", uploaddata
+            flash(uploaddata["message"])
+            request.client.deleteVideo(video["token"])
+            return redirect(url_for("VideoView:upload_get"))
+
 
         count = 20
         while count > 0:
