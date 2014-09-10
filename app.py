@@ -15,13 +15,16 @@ app.config.from_object("config.{env}Config".format(env=curr_env))
 def videofile_webserver_path(token, height, extention):
     return app.config["HOST"]+"/videos/" + token + "_" + str(height) + "." + extention
 
-def buildVideoFromJson(json):
-    if "message" in json.keys():
-        flash("could not load videos")
-        return {}
-        
+def buildVideoFromJson(jsobj):
+    try:
+        if "message" in jsobj.keys():
+            flash("could not load videos")
+            return {}
+    except:
+        pass # array{
+
     resultset = []
-    for video in json:
+    for video in jsobj:
         actualvideos = {}
         videomedias = request.client.getVideo(str(video["token"]))
         pprint(videomedias,indent=4)
@@ -123,9 +126,9 @@ class VideoView(FlaskView):
         return render_template("videolist.html",videos=videos)
 
     def get(self, videoid):
-        video = getVideosForQuery("token:"+videoid)[0]
-
-        return render_template("video.html",video=video)
+        videoMedias = getVideosForQuery("token:"+videoid)[0]["medias"]
+        video = request.client.getVideo(videoid)
+        return render_template("video.html",video=video,videoMedias=videoMedias)
 
     @route('/upload', endpoint='VideoView:upload_get', methods=["GET"])
     def upload_get(self):
@@ -135,21 +138,24 @@ class VideoView(FlaskView):
     def upload_post(self):
         title = request.form["title"]
         description = request.form["description"]
-        videotoken = request.client._getVideoToken(title, description)
-        request.client.uploadVideo(videotoken, request.files["videofile"])
+        video = request.client._getVideoToken(title, description)
+        if "message" in video.keys():
+            flash(video["message"])
+            return redirect(url_for("VideoView:upload_get"))
+        request.client.uploadVideo(video["token"], request.files["videofile"])
 
         count = 20
         while count > 0:
             count -= 1
             time.sleep(0.1)
             try:
-                getVideosForQuery("token:"+videoid)[0]
+                getVideosForQuery("token:"+video["token"])[0]
                 break
             except:
                 pass
                 # god is this ugly. waiting for the video to get indexed..
 
-        return redirect(app.config["HOST"]+url_for('VideoView:get', videoid=videotoken))
+        return redirect(app.config["HOST"]+url_for('VideoView:get', videoid=video["token"]))
 
 IndexView.register(app)
 AuthView.register(app)
