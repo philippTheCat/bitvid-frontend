@@ -201,3 +201,7 @@ class HTTPClient:
     def search(self, searchquery):
         returndata = self._get("/search?q="+searchquery)
         return self._json(returndata)
+
+    def deleteVideo(self, token):
+        returndata = self._delete("/video/"+token)
+        return self._json(returndata)
