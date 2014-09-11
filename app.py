@@ -61,7 +61,7 @@ class IndexView(FlaskView):
     route_base = "/"
 
     def index(self):
-        return render_template("index.html")
+        return redirect(url_for("VideoView:index"))
 
 
 class AuthView(FlaskView):
