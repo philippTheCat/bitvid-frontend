@@ -5,7 +5,7 @@
     <div class="large-8">
         <div class="package">
             {% if "webm" in videoMedias %}
-            <video height="{{videoMedias['webm'].height}}" controls>
+            <video height="{{videoMedias['webm'].height}}" controlsypy>
                 {% for video in videoMedias.values() %}
                     <source src="{{video.path}}" type="video/{{video.codec}}">
                 {% endfor %}
@@ -22,6 +22,13 @@
             <div class="large-2 medium-8 silent">
                 <h3>6,567,787 views</h3>
                 <h4>7,787 points</h4>
+            </div>
+            <hr>
+            <div class="large-6 medium-8">
+                <h6>Comments</h6>
+                <form action="{{ url_for('VideoCommentView:post') }}">
+
+                </form>
             </div>
         </div>
     </div>

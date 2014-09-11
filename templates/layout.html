@@ -12,7 +12,7 @@
             <form action="{{ url_for('VideoView:index') }}">
                 <input type="text" name="q" placeholder="Search">
             </form>
-            
+
             <a class="item selected" href="{{ url_for('VideoView:index') }}">
                 <span class="icon small"></span>
                 Subscriptions
@@ -38,14 +38,14 @@
         <div class="menu vertical closer">
             {% if not session.client_token %}
                 <div class="part">
-                    <a href="{{ url_for('AuthView:login_get') }}" class="button wide part">Login</a>
+                    <a href="{{ url_for('AuthView:get') }}" class="button wide part">Login</a>
                 </div>
 
                 <div class="part">
-                    <a href="{{ url_for('AuthView:register_get') }}" class="button wide part">Register</a>
+                    <a href="{{ url_for('RegisterView:get') }}" class="button wide part">Register</a>
                 </div>
             {% else %}
-                <a class="item" href="{{ url_for('VideoView:upload_get') }}">
+                <a class="item" href="{{ url_for('VideoUploadView:get') }}">
                     <span class="icon small"></span>
                     Upload
                 </a>

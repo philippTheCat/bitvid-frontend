@@ -5,7 +5,7 @@
     <h1>Upload your Video</h1>
     <hr>
     <div class="part small">
-            <form class="wide" method="post" action="{{ url_for('VideoView:upload_post') }}" enctype="multipart/form-data">
+            <form class="wide" method="post" action="{{ url_for('VideoUploadView:post') }}" enctype="multipart/form-data">
                 <label>Title</label>
                 <input type="text" name="title" placeholder="Video Title" />
                 <label>Description</label>
