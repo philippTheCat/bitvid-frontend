@@ -138,9 +138,10 @@ class VideoView(FlaskView):
         return render_template("videolist.html",videos=videos)
 
     def get(self, videoid):
-        videoMedias = getVideosForQuery("token:"+videoid)[0]["medias"]
-        video = request.client.getVideo(videoid)
-        return render_template("video.html",video=video,videoMedias=videoMedias)
+        video = getVideosForQuery("token:"+videoid)[0]
+        #video = request.client.getVideo(videoid)
+        pprint(video,indent=4)
+        return render_template("video.html",video=video,videoMedias=video["medias"])
 
     @route('/upload', endpoint='VideoView:upload_get', methods=["GET"])
     def upload_get(self):
