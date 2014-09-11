@@ -184,8 +184,22 @@ class VideoUploadView(FlaskView):
 
 class VideoCommentView(FlaskView):
     def post(self):
-        return "VideoCommentView"
+        try:
+            title = request.form["title"]
+            content = request.form["content"]
+            videotoken = request.form["videoToken"]
+        except Exception as ex:
+            print ex
+            flash("missing either title, description or videotoken")
 
+        comment = request.client.comment(title, content, videotoken)
+
+        if "message" in comment.keys():
+            flash(comment["message"])
+        else:
+            flash("comment posted successfully")
+
+        return redirect(url_for("VideoView:get",videoid = videotoken))
 IndexView.register(app)
 AuthView.register(app)
 RegisterView.register(app)

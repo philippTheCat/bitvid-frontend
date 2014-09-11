@@ -24,11 +24,20 @@
                 <h4>7,787 points</h4>
             </div>
             <hr>
-            <div class="large-6 medium-8">
-                <h6>Comments</h6>
-                <form action="{{ url_for('VideoCommentView:post') }}">
-
+            <div class="part small">
+                <form class="wide" method="post" action="{{ url_for('VideoCommentView:post') }}">
+                    <input type="hidden" name="videoToken" value="{{video.token}}">
+                    <label>Title</label>
+                    <input type="text" name="title" placeholder="Comment Title" />
+                    <label>Text</label>
+                    <textarea rows="5" name="content" placeholder="Lorem ipsum dolor something something I forgot how it continues"></textarea>
+                    <input type="submit" value="Post your comment Swaggot!">
                 </form>
+            </div>
+            <div class="part small">
+                {% for comment in comments %}
+                    {% include 'comment_element.html' %}
+                {% endfor %}
             </div>
         </div>
     </div>
