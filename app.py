@@ -166,7 +166,7 @@ class VideoUploadView(FlaskView):
             print "uploaddata", uploaddata
             flash(uploaddata["message"])
             request.client.deleteVideo(video["token"])
-            return redirect(url_for("VideoView:get"))
+            return redirect(url_for("VideoUploadView:get"))
 
 
         count = 20
