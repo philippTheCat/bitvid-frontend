@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask, render_template, session, request, flash, url_for, redirect, g
 from flask.ext.classy import FlaskView, route
 
@@ -24,7 +26,7 @@ def buildVideoFromJson(jsobj):
             flash("could not load videos")
             return {}
     except:
-        pass # array{
+        pass
 
     resultset = []
     for video in jsobj:
