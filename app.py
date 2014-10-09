@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, request, flash, url_for, redirect
+from flask import Flask, render_template, session, request, flash, url_for, redirect, g
 from flask.ext.classy import FlaskView, route
 
 from client import HTTPClient
@@ -12,8 +12,11 @@ app = Flask(__name__)
 curr_env = os.environ.get("BITVID_ENV", "Dev")
 app.config.from_object("config.{env}Config".format(env=curr_env))
 
-def videofile_webserver_path(token, height, extention):
-    return app.config["HOST"]+"/videos/" + token + "_" + str(height) + "." + extention
+
+def video_url(token, height, extention):
+    return "{host}/videos/{token}_{height}.{ext}".format(
+        host=app.config['HOST'], token=token, height=height, ext=extention)
+
 
 def buildVideoFromJson(jsobj):
     try:
@@ -34,7 +37,7 @@ def buildVideoFromJson(jsobj):
             for videomedia in videomedias["videos"]:
                 if videomedia["codec"] not in actualvideos.keys() or videomedia["height"] > actualvideos[videomedia["codec"]]["height"]:
                     print videomedia["codec"]
-                    videomedia["path"] = videofile_webserver_path(video["token"], videomedia["height"], videomedia["codec"])
+                    videomedia["path"] = video_url(video["token"], videomedia["height"], videomedia["codec"])
                     actualvideos[videomedia["codec"]] = videomedia
 
         video["medias"] = actualvideos
@@ -210,7 +213,7 @@ VideoCommentView.register(app)
 
 @app.before_request
 def before(*args, **kwargs):
-    request.client = HTTPClient(app.config["API_URL"])
+    g.client = HTTPClient(app.config["API_URL"])
     if "client_token" in session:
         request.client.authtoken = session["client_token"]
 
