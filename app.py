@@ -29,7 +29,7 @@ def buildVideoFromJson(jsobj):
     resultset = []
     for video in jsobj:
         actualvideos = {}
-        videomedias = request.client.getVideo(str(video["token"]))
+        videomedias = g.client.getVideo(str(video["token"]))
         if "message" in videomedias.keys():
             pass
         else:
@@ -48,7 +48,7 @@ def buildVideoFromJson(jsobj):
 
 
 def getVideosForQuery(query):
-    data = request.client.search(query)
+    data = g.client.search(query)
     pprint(data,indent=4)
     try:
         if "message" in data.keys():
@@ -78,7 +78,7 @@ class AuthView(FlaskView):
         password = request.form["password"]
 
         try:
-            success = request.client.authenticate(user, password)
+            success = g.client.authenticate(user, password)
         except:
             flash("could not login")
             return redirect(url_for("AuthView:get"))
@@ -92,7 +92,7 @@ class AuthView(FlaskView):
 
     @route("/logout", methods=["GET"]) # TODO, make this POST
     def logout(self):
-        request.client.authtoken = None
+        g.client.authtoken = None
         return redirect(url_for("IndexView:index"))
 
 
@@ -112,7 +112,7 @@ class RegisterView(FlaskView):
             return render_template("register.html")
 
         try:
-            success = request.client.register(user, password)
+            success = g.client.register(user, password)
         except:
             flash("could not register")
             return redirect(url_for("RegisterView:get"))
@@ -130,10 +130,10 @@ class RegisterView(FlaskView):
 
 class UserView(FlaskView):
     def index(self):
-        return render_template("user.html", user=request.client.getUser())
+        return render_template("user.html", user=g.client.getUser())
 
     def get(self, userid):
-        return render_template("user.html", user=request.client.getUser(userid))
+        return render_template("user.html", user=g.client.getUser(userid))
 
 
 class VideoView(FlaskView):
@@ -145,7 +145,7 @@ class VideoView(FlaskView):
 
     def get(self, videoid):
         video = getVideosForQuery("token:"+videoid)[0]
-        comments = request.client.getCommentsForVideo(videoid)
+        comments = g.client.getCommentsForVideo(videoid)
         pprint(video,indent=4)
         return render_template("video.html",video=video,videoMedias=video["medias"], comments=comments)
 
@@ -159,16 +159,16 @@ class VideoUploadView(FlaskView):
     def post(self):
         title = request.form["title"]
         description = request.form["description"]
-        video = request.client._getVideoToken(title, description)
+        video = g.client._getVideoToken(title, description)
         if "message" in video.keys():
             flash(video["message"])
             return redirect(url_for("VideoUploadView:get"))
-        uploaddata = request.client.uploadVideo(video["token"], request.files["videofile"])
+        uploaddata = g.client.uploadVideo(video["token"], request.files["videofile"])
 
         if "message" in uploaddata.keys():
             print "uploaddata", uploaddata
             flash(uploaddata["message"])
-            request.client.deleteVideo(video["token"])
+            g.client.deleteVideo(video["token"])
             return redirect(url_for("VideoUploadView:get"))
 
 
@@ -195,7 +195,7 @@ class VideoCommentView(FlaskView):
             print ex
             flash("missing either title, description or videotoken")
 
-        comment = request.client.comment(title, content, videotoken)
+        comment = g.client.comment(title, content, videotoken)
 
         if "message" in comment.keys():
             flash(comment["message"])
@@ -215,15 +215,15 @@ VideoCommentView.register(app)
 def before(*args, **kwargs):
     g.client = HTTPClient(app.config["API_URL"])
     if "client_token" in session:
-        request.client.authtoken = session["client_token"]
+        g.client.authtoken = session["client_token"]
 
 
 @app.after_request
 def after(response, **kwargs):
     print response, kwargs
-    session["client_token"] = request.client.authtoken
+    session["client_token"] = g.client.authtoken
 
     return response
 if __name__ == '__main__':
-    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'  # TODO, change this
+    app.secret_key = 'change this secret key'
     app.run(port=8080, debug=True)
