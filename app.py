@@ -15,9 +15,9 @@ curr_env = os.environ.get("BITVID_ENV", "Dev")
 app.config.from_object("config.{env}Config".format(env=curr_env))
 
 
-def video_url(token, height, extention):
+def video_url(token, height, extension):
     return "{host}/videos/{token}_{height}.{ext}".format(
-        host=app.config['HOST'], token=token, height=height, ext=extention)
+        host=app.config['HOST'], token=token, height=height, ext=extension)
 
 
 def buildVideoFromJson(jsobj):
