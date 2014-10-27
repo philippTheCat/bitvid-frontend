@@ -4,7 +4,7 @@
 
 Please install the backend server first before installing
 the frontend prerender. This project is entirely dependent
-on the backend server and is just is UI around it.
+on the backend server and is just a UI around it.
 
 ```
 # Install Python & friends
@@ -18,7 +18,7 @@ cd frontend-prerender
 git submodule init && git submodule update && git submodule status
 
 # Create a virtual environment for the project and enter it
-# (this is basically it's own little drawer of packages)
+# (this is basically its own little drawer of packages)
 virtualenv env
 . env/bin/activate
 

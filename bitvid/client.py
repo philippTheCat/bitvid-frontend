@@ -1,15 +1,17 @@
+# -*- coding: utf-8 -*-
+
 import requests
 import json
 
 
-class HTTPClient:
+class HttpClient(object):
 
-    def __init__(self, baseurl, clientBase=requests):
+    def __init__(self, baseurl, clientbase=requests):
         self.baseurl = baseurl
         self.authtoken = ""
         self.userid = -1
-        self.request = clientBase
-        self.testing = clientBase != requests
+        self.request = clientbase
+        self.testing = clientbase != requests
 
     def _json(self, response):
         if self.testing:  # flask test app
@@ -18,12 +20,10 @@ class HTTPClient:
             return response.json()
 
     def _request(self, op, url, data, headers=None):
-        if headers == None:
+        if headers is None:
             headers = {}
-
         if "Content-Type" not in headers.keys():
             headers["Content-Type"] = "application/json"
-
         if self.authtoken:
             headers["token"] = self.authtoken
 
@@ -91,7 +91,7 @@ class HTTPClient:
 
 
     def register(self, email, password):
-        print "registrating {email}:{password}".format(email=email, password=password)
+        print "registering {email}:{password}".format(email=email, password=password)
         registerdata = {
             "email": email,
             "password": password
