@@ -5,7 +5,7 @@ import os
 from flask import g, session
 
 from bitvid import app
-from bitvid.client import HttpClient
+from bitvid.client import BitvidClient
 
 env = os.environ.get('BITVID_ENV', 'Dev')
 app.config.from_object('config.{env}Config'.format(env=env))
@@ -18,7 +18,7 @@ from bitvid.views import *
 
 @app.before_request
 def before(*args, **kwargs):
-    g.client = HttpClient(app.config["API_URL"])
+    g.client = BitvidClient(app.config["API_URL"], debug=True)
     if "client_token" in session:
         g.client.authtoken = session["client_token"]
 

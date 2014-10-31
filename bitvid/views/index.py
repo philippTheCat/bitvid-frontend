@@ -6,8 +6,6 @@ from flask.ext.classy import FlaskView
 from bitvid import app
 
 
-print('hello')
-
 class IndexView(FlaskView):
     route_base = '/'
 
