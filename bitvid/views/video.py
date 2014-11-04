@@ -10,13 +10,14 @@ from bitvid.helpers import video_query
 
 
 class VideoView(FlaskView):
+
     def index(self):
         query = request.args.get("q", "*")
         videos = video_query(query)
 
         return render_template("videolist.html", videos=videos)
 
-    def get(self, id):
+    def get(self, videoid):
         video = video_query("token:" + id)[0]
         comments = g.client.getCommentsForVideo(id)
         pprint(video, indent=4)
