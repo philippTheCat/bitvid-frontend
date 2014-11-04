@@ -22,6 +22,8 @@ def video_url(token, height, extension):
     return "{host}/videos/{token}_{height}.{ext}".format(
         host=app.config['HOST'], token=token, height=height, ext=extension)
 
+def thumb_url(token):
+    return "{host}/thumbs/{token}.jpg".format( host=app.config['HOST'], token=token)
 
 def video_query(query):
     data = g.client.search(query)
@@ -64,6 +66,7 @@ def videos_from_json(json):
                     videos[videomedia["codec"]] = videomedia
 
         video["medias"] = videos
+        video["thumb"] = thumb_url(video["token"])
         results.append(video)
 
     pprint(results, indent=4)
