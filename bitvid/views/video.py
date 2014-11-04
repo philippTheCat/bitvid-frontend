@@ -18,8 +18,8 @@ class VideoView(FlaskView):
         return render_template("videolist.html", videos=videos)
 
     def get(self, videoid):
-        video = video_query("token:" + id)[0]
-        comments = g.client.getCommentsForVideo(id)
+        video = video_query("token:" + videoid)[0]
+        comments = g.client.getCommentsForVideo(videoid)
         pprint(video, indent=4)
         return render_template("video.html", video=video,
                                videoMedias=video["medias"], comments=comments)
