@@ -7,9 +7,9 @@ class Config:
 
 
 class DevConfig(Config):
-    HOST = 'http://localhost:8000'
+    HOST = 'http://localhost'
     DEBUG = True
 
 class PLGConfig(DevConfig):
-    API_URL = 'http://cersei-web-2.bitvid.tv:5000'
+    API_URL = 'http://localhost:5000'
     HOST = "" #http://cersei-web-2.bitvid.tv/
