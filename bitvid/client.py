@@ -220,8 +220,8 @@ class BitvidClient(HttpClient):
         headers = {"Content-Type": conttype}
         return self.put("/video/"+token, videoFile.read(), headers=headers)
 
-    def search(self, query):
-        return self.get('/search', query=dict(q=query))
+    def search(self, query, page = 0):
+        return self.get('/search', query=dict(q=query,page=page))
 
     def deleteVideo(self, token):
         return self.delete(['/video', token])

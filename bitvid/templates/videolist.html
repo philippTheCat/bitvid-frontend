@@ -1,8 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
+
 <div class="container">
 {% for video in videos %}
         {% include 'video_element.html' %}
 {% endfor %}
 </div>
+    Pages:<br>
+{% for i in range(pages) %}
+    <a href="{{url_for("VideoView:index")}}?q={{query}}&page={{i}}">{{i+1}}</a>
+{% endfor%}
 {% endblock %}

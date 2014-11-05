@@ -13,9 +13,10 @@ class VideoView(FlaskView):
 
     def index(self):
         query = request.args.get("q", "*")
-        videos = video_query(query)
+        curpage = request.args.get("page", 0)
+        pages, videos = video_query(query, page= curpage)
 
-        return render_template("videolist.html", videos=videos)
+        return render_template("videolist.html", videos=videos, pages=pages, query=query)
 
     def get(self, videoid):
         video = video_query("token:" + videoid)[0]

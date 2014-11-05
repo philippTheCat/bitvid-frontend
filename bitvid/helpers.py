@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from pprint import pprint
-
+from math import ceil
 from flask import flash, g
 
 from bitvid import app
@@ -25,8 +25,8 @@ def video_url(token, height, extension):
 def thumb_url(token):
     return "{host}/thumbs/{token}.jpg".format( host=app.config['HOST'], token=token)
 
-def video_query(query):
-    data = g.client.search(query)
+def video_query(query, page = 0):
+    data = g.client.search(query, page = page)
     pprint(data, indent=4)
     try:
         if "message" in data.keys():
@@ -48,7 +48,7 @@ def videos_from_json(json):
         pass
 
     results = []
-    for video in json:
+    for video in json["hits"]:
         videos = {}
         videomedias = g.client.getVideo(str(video["token"]))
         if "message" in videomedias.keys():
@@ -70,4 +70,7 @@ def videos_from_json(json):
         results.append(video)
 
     pprint(results, indent=4)
-    return results
+
+    pages = int(ceil(json["num"]/10.0))
+
+    return pages, results
