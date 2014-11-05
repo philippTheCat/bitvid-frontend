@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import flash, redirect, request, url_for
+from flask import flash, redirect, request, url_for, g
 from flask.ext.classy import FlaskView
 
 from bitvid import app
