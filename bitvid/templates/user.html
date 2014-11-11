@@ -9,6 +9,9 @@
             <br>
             <h6>id: {{user.id}}</h6>
         </div>
+                <p class="small">
+            <a class="silent" href="{{url_for('UserPasswordView:get')}}">Reset my password</a>
+        </p>
     </div>
 </div>
 {% endblock %}
