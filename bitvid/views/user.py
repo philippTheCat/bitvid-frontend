@@ -32,9 +32,9 @@ class UserPasswordView(FlaskView):
                 flash(user["message"])
                 return render_template("change_password.html", form=form)
 
-            email = user ["email"]
+            name = user ["name"]
 
-            res = g.client.changePassword(email,form.old_password.raw_data[0], form.password.raw_data[0])
+            res = g.client.changePassword(name,form.old_password.raw_data[0], form.password.raw_data[0])
 
             if "message" in res.keys():
                 flash(res["message"])

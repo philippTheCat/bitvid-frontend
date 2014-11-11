@@ -141,11 +141,11 @@ class BitvidClient(HttpClient):
     def get_user(self, userid='current'):
         return self.get(['/user', userid])
 
-    def authenticate(self, email, password):
-        print("Authenticating {email}:{password}".format(
-            email=email, password=password))
+    def authenticate(self, name, password):
+        print("Authenticating {name}:{password}".format(
+            name=name, password=password))
 
-        data = {'email': email, 'password': password}
+        data = {'name': name, 'password': password}
         response = self.post('/auth/', data, parse_json=False)
         print("Authentication data", self._parse_json(response))
         if response.status_code != 200:
@@ -154,11 +154,11 @@ class BitvidClient(HttpClient):
             self.authtoken = self._parse_json(response)['token']
             return self._parse_json(response)
 
-    def register(self, email, password):
-        print("Registering {email}:{password}".format(
-            email=email, password=password))
+    def register(self, name, password):
+        print("Registering {name}:{password}".format(
+            name=name, password=password))
 
-        data = {'email': email, 'password': password}
+        data = {'name': name, 'password': password}
         data = self.post('/user/', data, parse_json=False)
         if data.status_code != 200:
             return self._parse_json(data)
@@ -189,13 +189,13 @@ class BitvidClient(HttpClient):
         response = self.get(['/video', videotoken, 'comments'])
         return response['comments']
 
-    def unregister(self, email, password):
-        print("Unregistering user: " + email)
-        return self.delete('/user/', {'email': email, 'password': password})
+    def unregister(self, name, password):
+        print("Unregistering user: " + name)
+        return self.delete('/user/', {'name': name, 'password': password})
 
-    def changePassword(self, email, oldpass, newpass):
-        print('Changing password for user: ' + email)
-        data = {'email': email, 'password': oldpass, 'newpassword': newpass}
+    def changePassword(self, name, oldpass, newpass):
+        print('Changing password for user: ' + name)
+        data = {'name': name, 'password': oldpass, 'newpassword': newpass}
         return self.put('/user/', data)
 
     def deleteComment(self, commentToken):
