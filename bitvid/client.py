@@ -154,11 +154,11 @@ class BitvidClient(HttpClient):
             self.authtoken = self._parse_json(response)['token']
             return self._parse_json(response)
 
-    def register(self, name, password):
-        print("Registering {name}:{password}".format(
-            name=name, password=password))
+    def register(self, name, email, password):
+        print("Registering {name}:{email}:{password}".format(
+            name=name,email=email, password=password))
 
-        data = {'name': name, 'password': password}
+        data = {'name': name, 'password': password, 'email': email}
         data = self.post('/user/', data, parse_json=False)
         if data.status_code != 200:
             return self._parse_json(data)

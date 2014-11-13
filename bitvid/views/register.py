@@ -4,7 +4,7 @@ from flask import flash, g, redirect, request, render_template, url_for
 from flask.ext.classy import FlaskView
 
 from bitvid import app
-
+import traceback
 
 class RegisterView(FlaskView):
     route_base = "/auth/register"
@@ -14,6 +14,7 @@ class RegisterView(FlaskView):
 
     def post(self):
         user = request.form["username"]
+        email = request.form["email"]
         password = request.form["password"]
         password2 = request.form["password2"]
 
@@ -22,8 +23,9 @@ class RegisterView(FlaskView):
             return render_template("register.html")
 
         try:
-            success = g.client.register(user, password)
-        except:
+            success = g.client.register(user, email, password)
+        except Exception as e:
+            traceback.print_exc(e)
             flash("could not register")
             return redirect(url_for("RegisterView:get"))
 
