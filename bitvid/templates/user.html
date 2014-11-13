@@ -1,30 +1,30 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="container">
+<div class="container large-8">
+    <div class="large-8">
+        <div class="package">
+            <div class="part">
+                <h1>{{user.name}}</h1>
 
-    <div class="package">
-        <div class="part">
-            <h1>{{user.name}}</h1>
-
-            <br>
-            <h6>id: {{user.id}}</h6>
+                <br>
+                <h6>id: {{user.id}}</h6>
+            </div>
+                    <p class="small">
+                <a class="silent" href="{{url_for('UserPasswordView:get')}}">Reset my password</a>
+            </p>
+            <hr>
+            <h2>Videos</h2>
+            <div class="part">
+                {% for video in videos %}
+                        {% include 'video_element.html' %}
+                {% endfor %}
+            </div>
+                Pages:<br>
+            {% for i in range(pages) %}
+                <a href="{{url_for("UserView:get",userid=user.id)}}?q={{query}}&page={{i}}">{{i+1}}</a>
+            {% endfor%}
         </div>
-                <p class="small">
-            <a class="silent" href="{{url_for('UserPasswordView:get')}}">Reset my password</a>
-        </p>
-        <hr>
-        <h2>Videos</h2>
-        <div class="part">
-            {% for video in videos %}
-                    {% include 'video_element.html' %}
-            {% endfor %}
-        </div>
-            Pages:<br>
-        {% for i in range(pages) %}
-            <a href="{{url_for("UserView:get",userid=user.id)}}?q={{query}}&page={{i}}">{{i+1}}</a>
-        {% endfor%}
     </div>
-
 </div>
 
 

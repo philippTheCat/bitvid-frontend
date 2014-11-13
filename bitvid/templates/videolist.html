@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<div class="container">
+<div class="container large-8">
+
+<div class="package">
 {% for video in videos %}
         {% include 'video_element.html' %}
 {% endfor %}
@@ -10,4 +12,5 @@
 {% for i in range(pages) %}
     <a href="{{url_for("VideoView:index")}}?q={{query}}&page={{i}}">{{i+1}}</a>
 {% endfor%}
+</div>
 {% endblock %}
