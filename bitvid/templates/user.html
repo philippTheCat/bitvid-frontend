@@ -21,7 +21,7 @@
         </div>
             Pages:<br>
         {% for i in range(pages) %}
-            <a href="{{url_for("VideoView:index")}}?q={{query}}&page={{i}}">{{i+1}}</a>
+            <a href="{{url_for("UserView:get",userid=user.id)}}?q={{query}}&page={{i}}">{{i+1}}</a>
         {% endfor%}
     </div>
 
