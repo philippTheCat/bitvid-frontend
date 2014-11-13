@@ -1,17 +1,27 @@
 # -*- coding: utf-8 -*-
 
-from flask import g, render_template, flash, redirect, url_for
+from flask import g, render_template, flash, redirect, url_for, request
 from flask.ext.classy import FlaskView
 
 from bitvid import app
+from bitvid.helpers import video_query
 from bitvid.forms.Userforms import ChangePassword
 
 class UserView(FlaskView):
     def index(self):
-        return render_template("user.html", user=g.client.get_user())
+        return self.get('current')
 
     def get(self, userid):
-        return render_template("user.html", user=g.client.get_user(userid))
+        user = g.client.get_user(userid)
+        query = "user_id:{}".format(user["id"])
+        curpage = request.args.get("page", 0)
+        query_result = video_query(query, page= curpage)
+
+        pages, videos = 1, {}
+        if len(query_result) == 2:
+            pages, videos = query_result
+
+        return render_template("user.html", user=user, videos=videos, pages=pages)
 
 
 class UserPasswordView(FlaskView):

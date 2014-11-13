@@ -12,6 +12,20 @@
                 <p class="small">
             <a class="silent" href="{{url_for('UserPasswordView:get')}}">Reset my password</a>
         </p>
+        <hr>
+        <h2>Videos</h2>
+        <div class="part">
+            {% for video in videos %}
+                    {% include 'video_element.html' %}
+            {% endfor %}
+        </div>
+            Pages:<br>
+        {% for i in range(pages) %}
+            <a href="{{url_for("VideoView:index")}}?q={{query}}&page={{i}}">{{i+1}}</a>
+        {% endfor%}
     </div>
+
 </div>
+
+
 {% endblock %}
