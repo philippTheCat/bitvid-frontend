@@ -1,7 +1,7 @@
 {% block body %}
 
 <div class="large-8">
-    <h3>{{video.user_name}} <span class="unbold">posted</span></h3>
+    <h3><a href="{{url_for('UserView:get',userid=video.user_id)}}">{{video.user_name}}</a> <span class="unbold">posted</span></h3>
 </div>
 <div class="large-8">
     <div class="package">
