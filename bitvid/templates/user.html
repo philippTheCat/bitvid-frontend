@@ -19,10 +19,12 @@
                         {% include 'video_element.html' %}
                 {% endfor %}
             </div>
+            <div class="part">
                 Pages:<br>
             {% for i in range(pages) %}
                 <a href="{{url_for("UserView:get",userid=user.id)}}?q={{query}}&page={{i}}">{{i+1}}</a>
             {% endfor%}
+            </div>
         </div>
     </div>
 </div>
