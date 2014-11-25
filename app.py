@@ -21,14 +21,15 @@ from bitvid.views import *
 def before(*args, **kwargs):
     g.client = BitvidClient(app.config["API_URL"], debug=True)
     g.api = tortilla.wrap(app.config['API_URL'], debug=app.config['DEBUG'])
+
     if "client_token" in session:
         g.client.authtoken = session["client_token"]
+        g.api.headers.token = session['client_token']
 
 
 @app.after_request
 def after(response, **kwargs):
-    print response, kwargs
-    session["client_token"] = g.client.authtoken
+    session["client_token"] = g.api.headers.token
     return response
 
 

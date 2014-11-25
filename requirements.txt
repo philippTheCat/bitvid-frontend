@@ -6,11 +6,11 @@ MarkupSafe==0.23
 WTForms==2.0.1
 Werkzeug==0.9.6
 argparse==1.2.1
-bunch==1.0.1
 certifi==14.05.14
 colorclass==1.1.1
 itsdangerous==0.24
+lunch==1.0.1
 newrelic==2.28.0.26
-requests==2.4.0
+requests==2.4.3
 git+https://github.com/redodo/tortilla.git
 wsgiref==0.1.2

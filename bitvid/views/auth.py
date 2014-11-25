@@ -17,20 +17,23 @@ class AuthView(FlaskView):
         password = request.form["password"]
 
         try:
-            success = g.client.authenticate(user, password)
+            # TODO: change route of auth in backend without trailing slash
+            success = g.api.post('auth/', data={'name': user, 'password': password})
+            g.api.headers.token = success.token
         except:
             flash("could not login")
             return redirect(url_for("AuthView:get"))
 
         if "message" in success.keys():
             print "success", success
-            flash(success["message"])
+            flash(success.message)
             return redirect(url_for("AuthView:get"))
 
         return redirect(url_for("IndexView:index"))
 
     @route("/logout", methods=["GET"])  # TODO, make this POST
     def logout(self):
+        g.api.headers.token = None
         g.client.authtoken = None
         return redirect(url_for("IndexView:index"))
 
