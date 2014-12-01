@@ -18,15 +18,20 @@ class VideoUploadView(FlaskView):
     def post(self):
         title = request.form["title"]
         description = request.form["description"]
-        video = g.client._getVideoToken(title, description)
+        video = g.api.video.post(data={'title': title, 'description': description})
         if "message" in video.keys():
             flash(video["message"])
             return redirect(url_for("VideoUploadView:get"))
-        uploaddata = g.client.uploadVideo(video["token"],
-                                          request.files["videofile"])
+
+        f = request.files['videofile']
+        extension = f.filename.split(".")[-1]
+        headers = {'Content-Type': 'video/' + extension}
+
+        # TODO: Fix unicode issue with unknown chars in debug mode of Tortilla
+        uploaddata = g.api.video.put(video.token, data=f.read(),
+                                     headers=headers, debug=False)
 
         if "message" in uploaddata.keys():
-            print "uploaddata", uploaddata
             flash(uploaddata["message"])
             g.api.video.delete(video['token'])
             return redirect(url_for("VideoUploadView:get"))

@@ -33,7 +33,6 @@ class AuthView(FlaskView):
     @route("/logout", methods=["GET"])  # TODO, make this POST
     def logout(self):
         g.api.headers.token = None
-        g.client.authtoken = None
         return redirect(url_for("IndexView:index"))
 
 AuthView.register(app)
