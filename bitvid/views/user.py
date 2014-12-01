@@ -12,8 +12,8 @@ class UserView(FlaskView):
         return self.get('current')
 
     def get(self, userid):
-        user = g.client.get_user(userid)
-        query = "user_id:{}".format(user["id"])
+        user = g.api.user.get(userid)
+        query = "user_id:{}".format(user.id)
         curpage = request.args.get("page", 0)
         query_result = video_query(query, page= curpage)
 
@@ -36,7 +36,7 @@ class UserPasswordView(FlaskView):
         form = ChangePassword()
 
         if form.validate_on_submit():
-            user = g.client.get_user()
+            user = g.api.user.get('current')
 
             if "message" in user.keys():
                 flash(user["message"])

@@ -29,7 +29,7 @@ def before(*args, **kwargs):
 
 @app.after_request
 def after(response, **kwargs):
-    session["client_token"] = g.api.headers.token
+    session["client_token"] = g.api.headers.get('token')
     return response
 
 

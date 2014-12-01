@@ -37,6 +37,7 @@
                 </form>
             </div>
             <div class="part small">
+            {{ comments }}
                 {% for comment in comments %}
                     {% include 'comment_element.html' %}
                 {% endfor %}

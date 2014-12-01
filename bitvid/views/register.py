@@ -23,7 +23,8 @@ class RegisterView(FlaskView):
             return render_template("register.html")
 
         try:
-            success = g.client.register(user, email, password)
+            success = g.api('user/').post(data={
+                'name': user, 'password': password, 'email': email})
         except Exception as e:
             traceback.print_exc(e)
             flash("could not register")

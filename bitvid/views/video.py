@@ -25,14 +25,13 @@ class VideoView(FlaskView):
     def get(self, videoid):
         try:
             video = video_query("token:" + videoid)[1][0]
-            # comments = g.client.getCommentsForVideo(videoid)
-            comments = g.api.video(videoid).comments.get()
+            comments = g.api.video(videoid).comments.get().comments
             pprint(video, indent=4)
             return render_template("video.html", video=video,
                                    videoMedias=video["medias"], comments=comments)
         except Exception as e:
             flash("failed to load video")
             print e
-            return redirect(app.config["HOST"] + url_for('VideoView:index'))
+            return redirect(url_for('VideoView:index'))
 
 VideoView.register(app)
