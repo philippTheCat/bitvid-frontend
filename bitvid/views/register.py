@@ -23,7 +23,7 @@ class RegisterView(FlaskView):
             return render_template("register.html")
 
         try:
-            success = g.api('user/').post(data={
+            success = g.api.user.post(data={
                 'name': user, 'password': password, 'email': email})
         except Exception as e:
             traceback.print_exc(e)

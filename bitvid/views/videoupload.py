@@ -28,7 +28,7 @@ class VideoUploadView(FlaskView):
         if "message" in uploaddata.keys():
             print "uploaddata", uploaddata
             flash(uploaddata["message"])
-            g.client.deleteVideo(video["token"])
+            g.api.video.delete(video['token'])
             return redirect(url_for("VideoUploadView:get"))
 
         count = 20

@@ -17,8 +17,7 @@ class AuthView(FlaskView):
         password = request.form["password"]
 
         try:
-            # TODO: change route of auth in backend without trailing slash
-            success = g.api.post('auth/', data={'name': user, 'password': password})
+            success = g.api.auth.post(data={'name': user, 'password': password})
             g.api.headers.token = success.token
         except:
             flash("could not login")
