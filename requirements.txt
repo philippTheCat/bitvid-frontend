@@ -12,7 +12,7 @@ httpretty==0.8.3
 itsdangerous==0.24
 lunch==1.0.1
 newrelic==2.28.0.26
-requests==2.4.3
-tortilla==0.1.0
+requests==2.5.0
+tortilla==0.3.0
 urllib3==1.7.1
 wsgiref==0.1.2
