@@ -9,5 +9,7 @@ from bitvid import app
 
 def video_query(query, page = 0):
     videos = g.api.search.get(params={'q': query, 'page': page})
+    if "message" in videos:
+        return 0, []
     pages = int(ceil(videos.num / 10.0))
     return pages, videos.hits
