@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-
+import os
 class Config:
-    API_URL = 'http://localhost:5000'
+    API_URL = os.environ.get("API_URL",'http://bitvid-acc-backend.elasticbeanstalk.com/')
     SECRET_KEY = 'secret key'
 
 
