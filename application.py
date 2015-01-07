@@ -29,6 +29,7 @@ def after(response, **kwargs):
     session['client_token'] = g.api.headers.get('token')
     return response
 
+application = app
 
 if __name__ == '__main__':
     app.run(port=8080)
